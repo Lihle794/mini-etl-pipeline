@@ -1,83 +1,96 @@
-# 🗂 Mini ETL Pipeline with SQL + GitHub Copilot
+# 🗂 Mini ETL Pipeline: Crypto Prices with GitHub Copilot
 
 ## 📖 Project Overview
 This project is a **mini ETL (Extract, Transform, Load) pipeline** built in Python.  
-It demonstrates how to fetch data from a public API, clean and transform it with **Pandas**, and load it into a database (**SQLite**).  
+It fetches cryptocurrency prices (Bitcoin and Ethereum) from the **CoinGecko API**, transforms the data into a clean format using **Pandas**, and stores it in a **SQLite database**.  
 
-I used **GitHub Copilot** to speed up boilerplate code, generate SQL queries, and assist with Pandas transformations.  
-The goal is to showcase how AI-assisted coding can make data engineering tasks more efficient. 🚀  
+The pipeline runs automatically every 5 minutes using **Python’s schedule library**, and data can be visualized with **Matplotlib & Seaborn**.  
+
+**GitHub Copilot** was used to speed up coding for API requests, SQL integration, and data transformation.  
 
 ---
 
 ## ⚙️ Tech Stack
 - **Python 3**  
 - **Pandas** – data cleaning & transformation  
-- **Requests** – fetching API data  
-- **SQLAlchemy** – database interaction  
-- **SQLite** – lightweight database for storage  
+- **Requests** – API requests  
+- **SQLite** – local database  
+- **SQLAlchemy** (optional for future expansion)  
+- **schedule** – automatic ETL scheduling  
+- **Matplotlib & Seaborn** – data visualization  
 - **GitHub Copilot** – AI-assisted coding  
 
 ---
 
 ## 🔄 ETL Workflow
-1. **Extract** – Fetch data from a public API (e.g., CoinGecko for crypto prices / OpenWeatherMap for weather).  
-2. **Transform** – Clean and format JSON into a structured Pandas DataFrame.  
-3. **Load** – Save the transformed data into an SQLite database.  
-4. **Query** – Run SQL queries to get insights (latest values, averages, trends).  
+1. **Extract** – Fetch latest crypto prices from CoinGecko API.  
+2. **Transform** – Format JSON into a structured Pandas DataFrame with columns: `coin`, `price_usd`, `timestamp`.  
+3. **Load** – Append data to SQLite database `crypto_prices.db`.  
+4. **Schedule** – Pipeline runs every 5 minutes automatically.  
+5. **Visualize** – Use `visualize_data()` to generate line charts of prices over time.  
 
 ---
 
 ## 📊 Example Queries
+You can query the database using Python or SQLite:
+
 ```sql
--- Get the latest record
-SELECT * FROM prices ORDER BY date DESC LIMIT 1;
+-- Latest 5 records
+SELECT * FROM prices ORDER BY timestamp DESC LIMIT 5;
 
--- Get the maximum recorded value
-SELECT MAX(price) FROM prices;
+-- Maximum price
+SELECT MAX(price_usd) FROM prices;
 
--- Get the average value over the last 7 days
-SELECT AVG(price) FROM prices WHERE date >= DATE('now','-7 day');
-
+-- Average price over last 7 days
+SELECT AVG(price_usd) FROM prices WHERE timestamp >= DATE('now','-7 day');
 🚀 How to Run
-
-Clone the repository:
-
+1️⃣ Setup
+bash
+Copy code
 git clone https://github.com/your-username/mini-etl-pipeline.git
 cd mini-etl-pipeline
-
-
-Install dependencies:
-
+python3 -m venv venv
+source venv/bin/activate       # Linux/Mac
+# venv\Scripts\activate        # Windows
 pip install -r requirements.txt
-
-
-Run the pipeline:
-
+2️⃣ Start ETL Scheduler
+bash
+Copy code
 python etl_pipeline.py
+The pipeline fetches and stores crypto prices every 5 minutes.
 
+Stop with Ctrl+C when needed.
 
-Explore the SQLite database (etl_data.db) with your favorite SQL tool.
+3️⃣ Visualize Data (Optional)
+python
+Copy code
+from etl_pipeline import visualize_data
+visualize_data()
+Generates a line chart of Bitcoin and Ethereum prices over time.
 
 🧑‍💻 Skills Demonstrated
-
 API integration with Python
 
-Data cleaning with Pandas
+Data cleaning & transformation using Pandas
 
-SQL query writing & database management
+Database interaction with SQLite
 
-AI-assisted development with GitHub Copilot
+Automated pipelines with schedule
 
-Documentation & version control with Git + GitHub
+Data visualization with Matplotlib & Seaborn
+
+AI-assisted coding with GitHub Copilot
+
+Documentation & GitHub version control
 
 🌟 Future Improvements
+Add Streamlit dashboard for interactive charts
 
-Add a Streamlit dashboard to visualize data.
+Deploy on cloud database (PostgreSQL on AWS RDS or Heroku)
 
-Schedule pipeline with Apache Airflow or Prefect.
+Schedule using Airflow or Prefect for professional ETL workflows
 
-Deploy on the cloud (AWS RDS + S3).
+Expand to more cryptocurrencies or additional financial data
 
 🏆 About This Project
-
-Built as a one-day showcase project to practice data engineering fundamentals while exploring AI-assisted coding with GitHub Copilot.
+Built as a one-day showcase project to practice data engineering fundamentals while demonstrating AI-assisted coding with GitHub Copilot.
