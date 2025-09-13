@@ -78,7 +78,6 @@ def visualize_data(db_name="crypto_prices.db"):
     plt.tight_layout()
     plt.show()
 
-# --- Main ---
 if __name__ == "__main__":
-    # Start the ETL scheduler
+   
     start_scheduler()
