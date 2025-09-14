@@ -5,13 +5,13 @@ import pandas as pd
 import requests
 import pytest
 
-# --- Fix import path so pytest can find etl_pipeline.py ---
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from etl_pipeline import extract_data, transform_data, load_data, visualize_data
 
 
-# --- Extract Tests ---
+# Extract Tests
 def test_extract_data():
     data = extract_data()
     assert isinstance(data, dict)
@@ -31,7 +31,7 @@ def test_extract_data_failure(monkeypatch):
     assert data == {} or data is not None  # adjust depending on error handling
 
 
-# --- Transform Tests ---
+# Transform Tests
 def test_transform_data():
     raw_data = {"bitcoin": {"usd": 50000}, "ethereum": {"usd": 4000}}
     df = transform_data(raw_data)
@@ -50,7 +50,7 @@ def test_transform_data_invalid_format():
         transform_data({"bitcoin": {}})  # missing "usd"
 
 
-# --- Load Tests ---
+# Load Tests
 def test_load_data(tmp_path):
     db_name = tmp_path / "test_crypto.db"
     raw_data = {"bitcoin": {"usd": 50000}}
@@ -85,7 +85,7 @@ def test_load_data_multiple_inserts(tmp_path):
     assert set(result["coin"]) == {"bitcoin", "ethereum"}
 
 
-# --- Visualization Test ---
+# Visualization Test
 def test_visualize_data_empty(tmp_path, capsys):
     db_name = tmp_path / "test_empty.db"
     # create empty db

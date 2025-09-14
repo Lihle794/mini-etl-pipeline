@@ -7,7 +7,7 @@ import time
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# --- Extract ---
+# Extract
 def extract_data():
     url = "https://api.coingecko.com/api/v3/simple/price"
     params = {
@@ -17,7 +17,7 @@ def extract_data():
     response = requests.get(url, params=params)
     return response.json()
 
-# --- Transform ---
+# Transform
 def transform_data(data):
     records = []
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -31,20 +31,20 @@ def transform_data(data):
 
     return pd.DataFrame(records)
 
-# --- Load ---
+# Load 
 def load_data(df, db_name="crypto_prices.db"):
     conn = sqlite3.connect(db_name)
     df.to_sql("prices", conn, if_exists="append", index=False)
     conn.close()
     print(f"✅ Data loaded into {db_name} at {datetime.now()}")
 
-# --- ETL Job ---
+# ETL Job
 def etl_job():
     data = extract_data()
     df = transform_data(data)
     load_data(df)
 
-# --- Schedule ETL ---
+# Schedule ETL
 schedule.every(5).minutes.do(etl_job)
 
 def start_scheduler():
@@ -53,7 +53,7 @@ def start_scheduler():
         schedule.run_pending()
         time.sleep(1)
 
-# --- Visualization Function (run separately) ---
+# Visualization Function (run separately) 
 def visualize_data(db_name="crypto_prices.db"):
     conn = sqlite3.connect(db_name)
     df = pd.read_sql_query("SELECT * FROM prices ORDER BY timestamp", conn)
