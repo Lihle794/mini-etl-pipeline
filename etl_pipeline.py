@@ -62,6 +62,7 @@ def visualize_data(db_name="crypto_prices.db"):
     if df.empty:
         print("No data to visualize yet.")
         return
+    
 
     sns.set(style="whitegrid")
     plt.figure(figsize=(10,5))
