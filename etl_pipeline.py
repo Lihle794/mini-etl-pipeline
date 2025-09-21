@@ -82,4 +82,4 @@ def visualize_data(db_name="crypto_prices.db"):
 if __name__ == "__main__":
    
     start_scheduler()
-    start_scheduler()
+    visualize_data()
